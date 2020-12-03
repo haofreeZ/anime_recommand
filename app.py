@@ -1,7 +1,8 @@
-#coding=utf-8
+# coding=utf-8
 # 导入Flask类
 from flask import Flask, render_template, request
 from recommand import recommand
+import json
 
 # Flask类接收一个参数__name__
 app = Flask(__name__)
@@ -15,12 +16,15 @@ def index():
 
 @app.route("/search")
 def search():
-    # user_id = request.args.get("user_id")
-    user_id = 1
+    user_id = request.args.get("user_id")
+    # user_id = 1
+
     data = recommand(user_id)
+    if data['flag'] == 0:
+        return '用户不存在'
     return render_template("search.html", data=data)
 
 
 # Flask应用程序实例的run方法启动WEB服务器
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
